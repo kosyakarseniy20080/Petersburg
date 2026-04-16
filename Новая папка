@@ -1,0 +1,155 @@
+import random
+
+STAGES = [
+    """
+       ________
+
+       |/    |
+       |    (_)
+
+       |    \|/
+       |     |
+       |    / \
+
+       |
+    ___|___
+    """,
+    """
+       ________
+
+       |/    |
+       |    (_)
+
+       |    \|/
+       |     |
+       |    /
+
+       |
+    ___|___
+    """,
+    """
+       ________
+
+       |/    |
+       |    (_)
+
+       |    \|/
+       |     |
+       |
+
+       |
+    ___|___
+    """,
+    """
+       ________
+
+       |/    |
+       |    (_)
+
+       |    \|
+       |     |
+       |
+
+       |
+    ___|___
+    """,
+    """
+       ________
+
+       |/    |
+       |    (_)
+
+       |     |
+       |     |
+       |
+
+       |
+    ___|___
+    """,
+    """
+       ________
+
+       |/    |
+       |    (_)
+
+       |
+       |
+       |
+
+       |
+    ___|___
+    """,
+    """
+       ________
+
+       |/    |
+       |
+
+       |
+       |
+       |
+
+       |
+    ___|___
+    """,
+    """
+       ________
+
+       |/
+       |
+       |
+
+       |
+       |
+       |
+    ___|___
+    """
+]
+
+def play():
+    word = random.choice(['спорт', 'победа', 'аукцион', 'купюра']).lower()
+    guessed = []
+    score = 0
+    attempts = len(STAGES) - 1 
+    wheel = [100, 300, 500, 1000, 'БАНКРОТ', 0]
+
+    print("--- ПОЛЕ ЧУДЕС: ВИСЕЛИЦА ---")
+
+    while attempts >= 0:
+        print(STAGES[attempts])
+        display = [l if l in guessed else "_" for l in word]
+        print(f"Слово: {' '.join(display)}")
+        print(f"Счёт: {score} | Ошибок осталось: {attempts}")
+
+        if "_" not in display:
+            print("\n ПОБЕДА! Вы отгадали слово!")
+            break
+        
+        if attempts == 0:
+            print(f"\n ИГРА ОКОНЧЕНА. Загаданное слово: {word}")
+            break
+
+        input("\n Нажмите Enter, чтобы крутить барабан...")
+        sector = random.choice(wheel)
+        print(f"На барабане: {sector}")
+
+        if sector == 'БАНКРОТ':
+            score = 0
+            print("Ваши очки сгорели!")
+            continue
+
+        char = input("Введите букву: ").lower()
+
+        if char in guessed:
+            print("Уже было!")
+        elif char in word:
+            print("Есть такая буква!")
+            guessed.append(char)
+            if isinstance(sector, int): score += sector
+        else:
+            print("Промах!")
+            attempts -= 1
+            guessed.append(char)
+
+if __name__ == "__main__":
+    play()
